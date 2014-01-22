@@ -1,0 +1,34 @@
+{
+    "name": "csw4js",
+    "version": "0.0.1",
+    "description": "The missing CSW library for JavaScript",
+    "homepage": "http://csw4js.org",
+    "author": "Tom Kralidis",
+    "keywords": [
+        "csw",
+        "metadata",
+        "discovery",
+        "catalogue"
+    ],
+    "maintainers": [{
+        "name": "Tom Kralidis",
+        "email": "tomkralidis@gmail.com",
+        "web": "https://github.com/tomkralidis"
+    }],   
+    "contributors": [{
+        "name": "Tom Kralidis",
+        "email": "tomkralidis@gmail.com",
+        "web": "https://github.com/tomkralidis"
+    }],
+    "bugs": "https://github.com/tomkralidis/csw4js/issues",
+    "licenses": [{
+        "type": "MIT",
+        "url": "http://opensource.org/licenses/MIT"
+    }],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/tomkralidis/csw4js.git"
+    },
+    "directories": {},
+    "scripts": {}
+}
