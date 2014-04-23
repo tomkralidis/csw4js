@@ -22,8 +22,7 @@
                 border: 0;
             }
         </style>
-        <script type="text/javascript" src="../src/csw4js.util.js"></script>
-        <script type="text/javascript" src="../src/csw4js.core.js"></script>
+        <script type="text/javascript" src="../src/csw4js.js"></script>
     </head>
     <body>
         <header>
@@ -32,7 +31,9 @@
         <section>
             <script type="text/javascript">
                //var mycsw = new Csw('http://demo.pycsw.org');
-               var mycsw = new Csw('caps.xml');
+               var mycsw = new Csw4js.Csw('caps.xml');
+               alert(mycsw.GetRecords());
+               alert(Csw4js.Namespaces.csw202);
             </script>
         </section>
         <footer>
