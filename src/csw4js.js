@@ -208,7 +208,7 @@ Csw4js.Csw = function(url) {
         'request': 'GetCapabilities'
     };
 
-    if (this.url.indexOf('http') == 0) {  // it's a string
+    if (this.url.indexOf('http') === 0) {  // it's a string
         this.xml = Csw4js.loadXMLString(Csw4js.Util.buildUrl(this.url, params));
     }
     else {  // it's a URL 
