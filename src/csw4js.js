@@ -1,4 +1,3 @@
-
 var Csw4js = {};
 
 Csw4js.version = '0.0.1';
@@ -12,7 +11,7 @@ Csw4js.Proxy = '/cgi-bin/proxy.cgi?url=';
 Csw4js.Util = {};
 
 if (window.ActiveXObject) {
-    Csw4js.notIE = false;
+    Csw4js.NOTIE = false;
 }
 
 Csw4js.Namespaces = {
