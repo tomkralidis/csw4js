@@ -10,9 +10,21 @@ module.exports = function(grunt) {
                 src: 'src/<%= pkg.name %>.js',
                 dest: 'build/<%= pkg.name %>.min.js'
             }
+        },
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            }
+        },
+        qunit: {
+            files: ['test/index.html']
         }
     });
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
+
     grunt.registerTask('default', 'test task', function() {
         grunt.log.write('hi there');
     });
+    grunt.registerTask('test', ['qunit', 'jshint']);
 };
