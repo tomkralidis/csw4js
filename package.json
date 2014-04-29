@@ -37,6 +37,7 @@
         "jshint": "*",
         "qunitjs": "*",
         "grunt": "*",
+        "grunt-cli": "*",
         "grunt-contrib-qunit": "*",
         "grunt-contrib-jshint": "*"
     }
