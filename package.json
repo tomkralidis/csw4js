@@ -30,9 +30,14 @@
         "url": "git://github.com/tomkralidis/csw4js.git"
     },
     "directories": {},
-    "scripts": {},
+    "scripts": {
+        "test": "grunt test"
+    },
     "devDependencies": {
+        "jshint": "*",
+        "qunitjs": "*",
         "grunt": "*",
-        "qunitjs": "*"
+        "grunt-contrib-qunit": "*",
+        "grunt-contrib-jshint": "*"
     }
 }
