@@ -21,6 +21,14 @@ Csw4js.Namespaces = {
     'xlink': 'http://www.w3.org/1999/xlink'
 };
 
+Csw4js.IESelectionNamespaces = function() {
+    var namespaces = [];
+    for(var key in Csw4js.Namespaces) {
+        namespaces.push(key + ':\'' + Csw4js.Namespaces[key] + '\'');
+    }
+    return namespaces.join(' ');
+};
+
 Csw4js.nsResolver = function(prefix) {
     return Csw4js.Namespaces[prefix] || null;
 };
@@ -207,25 +215,36 @@ Csw4js.Csw = function(url) {
         'request': 'GetCapabilities'
     };
 
-    if (this.url.indexOf('http') === 0) {  // it's a string
-        this.xml = Csw4js.loadXMLString(Csw4js.Util.buildUrl(this.url, params));
+    console.log(this.url);
+    try {
+        try {
+            console.debug('Fetching url with params');
+            this.xml = Csw4js.loadXMLDoc(
+                Csw4js.Util.buildUrl(this.url, params));
+        } catch (err2) {
+            console.debug('Fetching url with no params (static doc)');
+            this.xml = Csw4js.loadXMLDoc(this.url, params);
+        }
+    } catch(err) {  // string
+        console.error(err);
+        this.xml = Csw4js.loadXMLString(this.url, params);
     }
-    else {  // it's a URL 
-        this.xml = Csw4js.loadXMLDoc(Csw4js.Util.buildUrl(this.url, params));
-    }
-
     // TODO: error checking, etc.
 
     // get main sections and parse them (TODO)
+    console.debug('Procesing ows:ServiceIdentificaiton');
     node = Csw4js.getXPathNode(this.xml, '//ows:ServiceIdentification');
     this.identification = new Csw4js.Ows.ServiceIdentification(node);
 
+    console.debug('Procesing ows:ServiceProvider');
     node = Csw4js.getXPathNode(this.xml, '//ows:ServiceProvider');
     this.provider = new Csw4js.Ows.ServiceProvider(node);
 
+    console.debug('Procesing ows:OpeartionsMetadata');
     node = Csw4js.getXPathNode(this.xml, '//ows:OperationsMetadata');
     this.operationsmetadata = new Csw4js.Ows.OperationsMetadata(node);
 
+    console.debug('Procesing ogc:Filter_Capabilities');
     node = Csw4js.getXPathNode(this.xml, '//ogc:Filter_Capabilities');
     this.filtercapabilities = new Csw4js.Fes.FilterCapabilities(node);
 };
@@ -245,7 +264,9 @@ Csw4js.Csw.prototype.GetRecordById = function(id_list, esn,
         'elementsetname': esn || null,
         'id': id_list.join(',')
     };
-    this.xml = Csw4js.loadXMLDoc(Csw4js.Util.buildUrl(this.url, params));
+
+    var url = this.getOperationByName('GetRecordById').dcp.http.get;
+    this.xml = Csw4js.loadXMLDoc(Csw4js.Util.buildUrl(url, params));
 };
 
 Csw4js.Csw.prototype.getOperationByName = function(name) {
@@ -260,17 +281,31 @@ Csw4js.Csw.prototype.getOperationByName = function(name) {
 
 // util functions
 
-Csw4js.loadXMLDoc = function(filename) {
-    var xhttp = null;
-    if (Csw4js.NOTIE) {
-        xhttp = new XMLHttpRequest();
+Csw4js.loadXMLDoc = function(url) {
+    var httpRequest;
+    try {  // no proxy
+        console.debug('no proxy');
+        httpRequest = this.Util.httpGet(url);
+        console.debug('found no proxy');
+        if (httpRequest.status !== 200) {
+            throw 'HTTP status code ' + httpRequest.status;
+        }
+        return httpRequest.responseXML;
+    } catch (err) {  // with proxy
+        try {
+            console.warn(err);
+            console.debug('with proxy');
+            httpRequest = this.Util.httpGet(Csw4js.Proxy + url);
+            console.debug('found with proxy');
+            if (httpRequest.status !== 200) {
+                throw 'HTTP status code ' + httpRequest.status;
+            }
+            return httpRequest.responseXML;
+        } catch (err2) {
+            console.error(err2);
+            throw 'Unable to load XML from URL';
+        }
     }
-    else {
-        xhttp = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xhttp.open('GET', filename, false);
-    xhttp.send();
-    return xhttp.responseXML;
 };
 
 Csw4js.loadXMLString = function(txt) {
@@ -301,8 +336,7 @@ Csw4js.Util.httpGet = function(url) {
         httpRequest.send(null);
         return httpRequest;
     } catch (e) {
-        console.error('Can\'t get XML document.');
-        return null;
+        throw e;
     }
 };
 
@@ -319,8 +353,7 @@ Csw4js.Util.httpPost = function(url, lang, request) {
         httpRequest.send(request);
         return httpRequest;
     } catch (e) {
-        console.error('Can\'t post XML document.');
-        return null;
+        throw(e);
     }
 };
 
