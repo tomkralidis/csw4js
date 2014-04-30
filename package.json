@@ -39,6 +39,7 @@
         "grunt": "*",
         "grunt-cli": "*",
         "grunt-contrib-qunit": "*",
-        "grunt-contrib-jshint": "*"
+        "grunt-contrib-jshint": "*",
+        "grunt-strip": "*"
     }
 }
