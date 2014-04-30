@@ -30,7 +30,10 @@
         </header>
         <section>
             <script type="text/javascript">
-               var csw = new Csw4js.Csw(Csw4js.Proxy+'http://demo.pycsw.org/cite/csw');
+               // by URL via CSW
+               //var csw = new Csw4js.Csw('http://demo.pycsw.org/cite/csw');
+               // by URL via doc
+               var csw = new Csw4js.Csw('./caps.xml');
             </script>
         </section>
         <footer>
