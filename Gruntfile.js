@@ -18,13 +18,21 @@ module.exports = function(grunt) {
         },
         qunit: {
             files: ['test/index.html']
+        },
+        strip : {
+            main : {
+                src : 'src/csw4js.js',
+                dest : 'src/csw4js.built.js'
+            }
         }
     });
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-strip');
 
     grunt.registerTask('default', 'test task', function() {
         grunt.log.write('hi there');
     });
     grunt.registerTask('test', ['qunit', 'jshint']);
+    grunt.registerTask('build', ['strip']);
 };
