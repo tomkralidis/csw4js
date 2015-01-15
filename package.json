@@ -33,6 +33,10 @@
     "scripts": {
         "test": "grunt test"
     },
+    "dependencies" :{
+        "jsonix": ">=2",
+        "ogc-schemas": ">=2"
+    },
     "devDependencies": {
         "jshint": "*",
         "qunitjs": "*",
