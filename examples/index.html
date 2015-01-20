@@ -23,8 +23,9 @@
         }
     </style>
     <script type="text/javascript" src="../node_modules/jsonix/jsonix.js"></script>
-    <script type="text/javascript" src="../src/CSW_2_0_2_Full.js"></script>
+    <script type="text/javascript" src="../node_modules/ogc-schemas/lib/CSW_2_0_2_Full.js"></script>
     <script type="text/javascript" src="../src/csw4js.js"></script>
+
 </head>
 <body>
 <header>
@@ -41,8 +42,9 @@
                 null,
                 'results',
                 null);
+        console.log(records.value.searchResults.abstractRecord[0].value.dcElement[3].value.content[0]);
 
-       console.log(records);
+
     </script>
 </section>
 <footer>

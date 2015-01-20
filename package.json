@@ -1,49 +1,55 @@
 {
-    "name": "csw4js",
-    "version": "0.0.1",
-    "description": "The missing CSW library for JavaScript",
-    "homepage": "https://github.com/tomkralidis/csw4js",
-    "author": "Tom Kralidis",
-    "keywords": [
-        "csw",
-        "metadata",
-        "discovery",
-        "catalogue"
-    ],
-    "maintainers": [{
-        "name": "Tom Kralidis",
-        "email": "tomkralidis@gmail.com",
-        "url": "https://github.com/tomkralidis"
-    }],   
-    "contributors": [{
-        "name": "Tom Kralidis",
-        "email": "tomkralidis@gmail.com",
-        "url": "https://github.com/tomkralidis"
-    }],
-    "bugs": "https://github.com/tomkralidis/csw4js/issues",
-    "licenses": [{
-        "type": "MIT",
-        "url": "http://opensource.org/licenses/MIT"
-    }],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/tomkralidis/csw4js.git"
-    },
-    "directories": {},
-    "scripts": {
-        "test": "grunt test"
-    },
-    "dependencies" :{
-        "jsonix": ">=2",
-        "ogc-schemas": ">=2"
-    },
-    "devDependencies": {
-        "jshint": "*",
-        "qunitjs": "*",
-        "grunt": "*",
-        "grunt-cli": "*",
-        "grunt-contrib-qunit": "*",
-        "grunt-contrib-jshint": "*",
-        "grunt-strip": "*"
+  "name": "csw4js",
+  "version": "0.0.1",
+  "description": "The missing CSW library for JavaScript",
+  "homepage": "https://github.com/tomkralidis/csw4js",
+  "author": "Tom Kralidis",
+  "keywords": [
+    "csw",
+    "metadata",
+    "discovery",
+    "catalogue"
+  ],
+  "maintainers": [
+    {
+      "name": "Tom Kralidis",
+      "email": "tomkralidis@gmail.com",
+      "url": "https://github.com/tomkralidis"
     }
+  ],
+  "contributors": [
+    {
+      "name": "Tom Kralidis",
+      "email": "tomkralidis@gmail.com",
+      "url": "https://github.com/tomkralidis"
+    }
+  ],
+  "bugs": "https://github.com/tomkralidis/csw4js/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tomkralidis/csw4js.git"
+  },
+  "directories": {},
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "jsonix": ">=2",
+    "ogc-schemas": ">=2"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-strip": "*",
+    "jshint": "*",
+    "qunitjs": "*"
+  }
 }
