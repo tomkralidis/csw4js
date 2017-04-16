@@ -21,6 +21,13 @@ Csw4js.Namespaces = {
     'xlink': 'http://www.w3.org/1999/xlink'
 };
 
+/**
+ * Jsonix CSW unmarshaller
+ *
+ * */
+
+Csw4js.unmarshaller = new Jsonix.Context([OWS_1_0_0, DC_1_1, DCT, XLink_1_0, CSW_2_0_2]).createUnmarshaller();
+
 Csw4js.IESelectionNamespaces = function() {
     var namespaces = [];
     for(var key in Csw4js.Namespaces) {
@@ -36,20 +43,20 @@ Csw4js.nsResolver = function(prefix) {
 Csw4js.getXPathNode = function(doc, xpath) {
     var evaluator = new XPathEvaluator();
     var result = evaluator.evaluate(xpath, doc, Csw4js.nsResolver,
-                                    XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        XPathResult.FIRST_ORDERED_NODE_TYPE, null);
     return result.singleNodeValue;
 };
 
 Csw4js.getXPathNodeList = function(doc, xpath) {
     var evaluator = new XPathEvaluator();
     var iter = evaluator.evaluate(xpath, doc, Csw4js.nsResolver,
-                                  XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     return iter;
 };
 Csw4js.getXPathValue = function(doc, xpath) {
     var evaluator = new XPathEvaluator();
     var result = evaluator.evaluate(xpath, doc, Csw4js.nsResolver,
-                                    XPathResult.STRING_TYPE, null);
+        XPathResult.STRING_TYPE, null);
     return result.stringValue;
 };
 
@@ -57,14 +64,18 @@ Csw4js.getXPathValueList = function(doc, xpath) {
     var list = [];
     var evaluator = new XPathEvaluator();
     var iter = evaluator.evaluate(xpath, doc, Csw4js.nsResolver,
-                                  XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     var node = iter.iterateNext();
     while (node) {
-        list.push(node.textContent);
+        list.push(node.value);
         node = iter.iterateNext();
-    }	
+    }
     return list;
 };
+
+Csw4js.getXPathNodeAttributeValue = function(doc, xpath){
+    return doc.getAttributeNode(xpath).value;
+}
 
 Csw4js.Ows.ServiceIdentification = function(node) {
     this.title = Csw4js.getXPathValue(node, 'ows:Title');
@@ -121,7 +132,7 @@ Csw4js.Ows.OperationsMetadata = function(node) {
     var iter2 = null;
     var member = null;
     var member2 = null;
-    var operation = null; 
+    var operation = null;
     var param = null;
     this.operations = [];
     this.parameters = [];
@@ -249,12 +260,53 @@ Csw4js.Csw = function(url) {
     this.filtercapabilities = new Csw4js.Fes.FilterCapabilities(node);
 };
 
-Csw4js.Csw.prototype.GetRecords = function() {
-    return 'GetRecords called';
+/**
+ *
+ * Operations List:
+ *
+ * GetCapabilities
+ * Transaction
+ * GetRepositoryItem
+ * DescribeRecord
+ * GetDomain
+ * GetRecordById
+ * GetRecords
+ * Harvest
+ *
+ * */
+
+/**
+ * Operation name: GetRecords
+ *
+ * */
+
+Csw4js.Csw.prototype.GetRecords = function(esn, resulttype, typename) {
+    console.log('Get Records');
+    //return 'GetRecords called';
+    var params = {
+        'service': 'CSW',
+        'version': this.version,
+        'request': 'GetRecords',
+        'outputformat': 'application/xml',
+        'outputschema': 'http://www.opengis.net/cat/csw/2.0.2',
+        'resulttype' : resulttype || null,
+        'typenames' : typename || 'csw:Record',
+        'elementsetname': esn || 'full'
+    };
+
+    var url = this.getOperationByName('GetRecords').dcp.http.get;
+    this.xml = Csw4js.loadXMLDoc(Csw4js.Util.buildUrl(url, params));
+
+    return Csw4js.unmarshaller.unmarshalDocument(this.xml);
 };
 
+/**
+ * Operation name: GetRecordById
+ *
+ * */
+
 Csw4js.Csw.prototype.GetRecordById = function(id_list, esn,
-    outputformat, outputschema) {
+                                              outputformat, outputschema) {
     var params = {
         'service': 'CSW',
         'version': this.version,
@@ -279,7 +331,9 @@ Csw4js.Csw.prototype.getOperationByName = function(name) {
     return false;
 };
 
-// util functions
+/**
+ * Util functions
+ * */
 
 Csw4js.loadXMLDoc = function(url) {
     var httpRequest;
@@ -362,8 +416,9 @@ Csw4js.Util.buildUrl = function(url, params) {
 
     for (var key in params) {
         if (params[key] !== null) {
-            kvps.push(key+'='+params[key]); 
+            kvps.push(key+'='+params[key]);
         }
     }
-    return url + escape('?' + kvps.join('&'));
+
+    return url + '?' + kvps.join('&');
 };
